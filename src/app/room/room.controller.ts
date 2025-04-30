@@ -1,17 +1,22 @@
-import { Body, Controller, Delete, Get, Post } from "@nestjs/common";
-import { rooms } from "src/shared/rooms";
-import { Player } from "../player/player";
-import { Room } from "./room";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Room, RoomRepository } from "./room.repository";
+import { RoomRequestDTO } from "./dtos/request";
 
 @Controller('rooms')
 export class RoomController {
+    private readonly roomRepository: RoomRepository;
+
+    constructor(roomRepository: RoomRepository) {
+        this.roomRepository = roomRepository;
+    }
+
     @Get()
-    private getRoom() {
-        return rooms;
+    private getRoom(): Room[] {
+        return this.roomRepository.getRooms();
     }
 
     @Post()
-    private createRoom(@Body() player1: Player) {
-        rooms.push(new Room(player1));
+    private createRoom(@Body() payload: RoomRequestDTO): void {
+        this.roomRepository.createRoom(payload);
     }
 }

@@ -1,17 +1,22 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
-import { players } from "src/shared/players";
-import { PlayerDTO } from "./dtos/player.dto";
-import { Player } from "./player";
+import { Player, PlayerRepository } from "./player.repository";
+import { PlayerRequestDTO } from "./dtos/request";
 
 @Controller('players')
 export class PlayerController {
+    private readonly playerRepository: PlayerRepository;
+    
+    constructor(playerRepository: PlayerRepository) {
+        this.playerRepository = playerRepository;
+    }
+
     @Get()
-    private getPlayers() {
-        return players;
+    getPlayers(): Player[] {
+        return this.playerRepository.getPlayers();
     }
 
     @Post()
-    private createPlayer(@Body() player: PlayerDTO) {
-        players.push(new Player(player));
+    createPlayer(@Body() payload: PlayerRequestDTO): void {
+        this.playerRepository.createPlayer(payload);
     }
 }
