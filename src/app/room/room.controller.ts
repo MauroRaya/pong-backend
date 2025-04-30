@@ -11,12 +11,12 @@ export class RoomController {
     }
 
     @Get()
-    private getRoom(): Room[] {
+    getRoom(): Room[] {
         return this.roomRepository.getRooms();
     }
 
     @Post()
-    private createRoom(@Body() payload: RoomRequestDTO): void {
+    createRoom(@Body() payload: RoomRequestDTO): void {
         this.roomRepository.createRoom(payload);
     }
 }

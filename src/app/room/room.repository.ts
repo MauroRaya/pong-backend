@@ -26,8 +26,10 @@ export class RoomRepository {
     }
 
     createRoom(roomRequestDTO: RoomRequestDTO): void {
+        const player = new Player(roomRequestDTO.playerName);
+
         this.rooms.push(
-            new Room(roomRequestDTO.player1)
+            new Room(player)
         );
     }
 }

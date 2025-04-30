@@ -1,5 +1,8 @@
-import { Player } from "src/app/player/player.repository";
+import { IsNotEmpty, IsString, Length } from "class-validator";
 
 export class RoomRequestDTO {
-    player1: Player;
+    @IsString()
+    @IsNotEmpty()
+    @Length(2, 50)
+    playerName: string;
 }
