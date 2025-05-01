@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { PlayerController } from "./player.controller";
-import { PlayerRepository } from "./player.repository";
+import { DatabaseModule } from "src/shared/database/database.module";
 
 @Module({
-    providers: [PlayerRepository],
+    imports: [DatabaseModule],
     controllers: [PlayerController]
 })
 export class PlayerModule {}
