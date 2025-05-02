@@ -1,22 +1,19 @@
-// import { Body, Controller, Get, Post } from "@nestjs/common";
-// import { Room, RoomRepository } from "./room.repository";
-// import { RoomRequestDTO } from "./dtos/request";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { RoomRequestDTO } from "./dtos/request";
+import { RoomService } from "./room.service";
+import { RoomResponseDTO } from "./dtos/response";
 
-// @Controller('rooms')
-// export class RoomController {
-//     private readonly roomRepository: RoomRepository;
+@Controller('rooms')
+export class RoomController {
+    constructor(private readonly roomService: RoomService) {}
 
-//     constructor(roomRepository: RoomRepository) {
-//         this.roomRepository = roomRepository;
-//     }
+    @Get()
+    getRoom(): Promise<RoomResponseDTO[]> {
+        return this.roomService.getRooms();
+    }
 
-//     @Get()
-//     getRoom(): Room[] {
-//         return this.roomRepository.getRooms();
-//     }
-
-//     @Post()
-//     createRoom(@Body() payload: RoomRequestDTO): void {
-//         this.roomRepository.createRoom(payload);
-//     }
-// }
+    @Post()
+    createRoom(@Body() payload: RoomRequestDTO): void {
+        this.roomService.createRoom(payload);
+    }
+}

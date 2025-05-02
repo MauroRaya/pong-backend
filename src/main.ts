@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigModule } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
-ConfigModule.forRoot();
+import { EnvService } from './shared/env/env.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe({
@@ -14,12 +13,11 @@ async function bootstrap() {
     forbidNonWhitelisted: true
   }));
 
-  const PORT = process.env.PORT;
-  if (!PORT) {
-    throw new Error('Variavel de ambiente PORT está undefined');
-  }
+  const envService = app.get<EnvService>(EnvService);
+  const port = envService.get("PORT");
 
-  await app.listen(PORT);
-  console.log(`Rodando na porta ${PORT}`);
+  await app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+  });
 }
 bootstrap();
